@@ -18,7 +18,10 @@ def create(request):
     if request.method=="POST":
         form = PostForm(request.POST)
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)
+            if request.FILES.get('image'):
+                post.image = request.FILES['image']
+            post.save()
             return redirect("posts:index")
     else:
         form = PostForm()
@@ -32,3 +35,23 @@ def delete(request, pk):
     post = Post.objects.get(pk=pk)
     post.delete()
     return redirect("posts:index")
+
+@require_http_methods(["POST", "GET"])
+def update(request, pk):
+    post = Post.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            if request.FILES.get('image'):
+                post.image = request.FILES['image']
+            post.save()
+            return redirect("posts:index")
+    else:
+        form = PostForm(instance=post)
+
+    context = {
+        "form" : form,
+        'post' : post,
+    }
+    return render(request, "posts/update.html", context)
