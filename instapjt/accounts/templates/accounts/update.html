@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% block content %}
+<div class="d-flex flex-column align-items-center mt-5 mx-auto" style="width: 50%">
+    <h1>UPDATE</h1>
+    <form action="{% url 'accounts:update' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <input type="submit" value="수정" class="btn btn-info mt-3">
+        </form>
+    </div>
+{% endblock content %}

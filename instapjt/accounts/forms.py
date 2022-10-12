@@ -16,4 +16,9 @@ class CustomUserChangeForm(UserChangeForm):
 
     class Meta(UserChangeForm.Meta):
         model = get_user_model()
-        fields = ('email', 'first_name', 'last_name',)
+        fields = ('email', 'first_name', 'last_name', 'profile_image')
+
+    # profile_image = forms.ImageField(
+    #     label = "프로필 사진",
+    #     required= False,
+    # )

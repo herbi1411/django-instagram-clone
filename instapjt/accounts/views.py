@@ -47,12 +47,15 @@ def logout(request):
 @require_http_methods(["POST", "GET"])
 def update(request):
     if request.method == "POST":
+        print(request)
         form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            user.profile_image = request.FILES.get('profile_image')
+            user.save()
             return redirect("posts:index")
     else:
-        form = CustomUserChangeForm(files=request.FILES, instance=request.user)
+        form = CustomUserChangeForm(instance=request.user)
     context = {
         "form" : form,
     }
