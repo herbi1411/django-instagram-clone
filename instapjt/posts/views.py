@@ -16,12 +16,9 @@ def index(request):
 @require_http_methods(["GET", "POST"])
 def create(request):
     if request.method=="POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save(commit=False)
-            if request.FILES.get('image'):
-                post.image = request.FILES['image']
-            post.save()
+            form.save()
             return redirect("posts:index")
     else:
         form = PostForm()

@@ -9,7 +9,7 @@
     <title>Document</title>
 </head>
 <body style="background-color: lightgray;">
-    <nav class="navbar fixed-top navbar-expand-lg" style="background-color: #f5e6ab;">
+    <nav class="navbar fixed-top navbar-expand-lg" style="background-color: #f5e6ab; position: sticky;">
         <div class="container-fluid">
           <a class="navbar-brand" href="{% url 'posts:index' %}">
             <img src="{% static './images/logo.png' %}" alt="" width="30" height="24" class="d-inline-block align-text-middle">
@@ -37,7 +37,7 @@
         </div>
         <div class="d-flex mx-2">
           {% if user.is_authenticated %}
-          <button type="button" class="d-block btn btn-link text-decoration-none text-success me-3">{{ user }}</button>
+          <a href="{% url 'accounts:profile' %}" class="d-block btn btn-link text-decoration-none text-success me-3">{{ user }}</a>
           <form action="{% url 'accounts:logout' %}" method="POST">
             {% csrf_token %}
             <input type="submit" class="btn btn-outline-danger" value="Logout">
