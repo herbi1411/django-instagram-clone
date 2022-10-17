@@ -1,39 +1,87 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
 {% block content %}
 <h1 class="text-center">메인 화면</h1>
 <hr>
 <div class = "container d-flex flex-column mb-3 mx-auto mt-3 align-items-center">
     {% for post in posts %}
-        <div class="card mb-3" style="width:70%">
-            {% if post.image %}
-                <img src="{{ post.image.url }}" class="card-img-top" data-bs-toggle="modal" data-bs-target="#{{ post.content }}" alt="image" style="max-height:400px; object-fit : cover; object-position : left">              
+        <div class="card mb-5 " style="width:70%">
+            <div class="card-header">
+                <img src="{{ post.author.profile_image.url }}" width="30px;" alt="profile image" data-bs-toggle="modal" data-bs-target="#profile-image{{ post.pk }}">
                 <!-- Modal -->
-                <div class="modal" id="{{ post.content }}" tabindex="-1" aria-labelledby="exampleModalToggle" aria-hidden="true">
+                <div class="modal" id="profile-image{{ post.pk }}" tabindex="-1" aria-labelledby="exampleModalToggle" aria-hidden="true">
+                    <div class="modal-dialog" style="max-width : 50%;">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <img src="{{ post.author.profile_image.url }}" class="card-img-top" alt="image" style="max-height : 900px; object-fit : contain;">
+                            </div>
+                            <div class="modal-footer d-flex flex-column align-items-start">
+                                <button type="button" class="d-block mx-auto btn btn-secondary" data-bs-dismiss="modal" style="width : 70%">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'accounts:profile' post.author.pk %}"class="h3 text-decoration-none text-info">{{ post.author }}</a>
+            </div>
+            {% if post.image %}
+                <img src="{{ post.image.url }}" class="card-img-top" data-bs-toggle="modal" data-bs-target="#post{{ post.pk }}" alt="image" style="max-height:400px; object-fit : cover; object-position : left">              
+                <!-- Modal -->
+                <div class="modal" id="post{{ post.pk }}" tabindex="-1" aria-labelledby="exampleModalToggle" aria-hidden="true">
                     <div class="modal-dialog" style="max-width : 50%;">
                         <div class="modal-content">
                         <div class="modal-header">
-                            <img src="{{ post.image.url }}" class="card-img-top" alt="image">
+                            <img src="{{ post.image.url }}" class="card-img-top" alt="image" style="max-height : 900px; object-fit : contain;">
                         </div>
                         <div class="modal-body">
                             {{ post.content }}
                         </div>
-                        <div class="modal-footer d-flex justify-content-center ">
+                        <div class="modal-footer d-flex flex-column align-items-start">
+                            <ul class="mb-3">
+                                {% for comment in post.comment_set.all %}
+                                    <li>{{comment.author}} - {{ comment.content }}</li>
+                                {% endfor %}
+                            </ul> 
+                            <form action="{% url 'posts:comments_create' post.pk %}" method="POST" class="container w-100 form-horizontal form-inline">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-9 form-group">
+                                        {% bootstrap_form comment_form %}
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="submit" value="제출" class="btn btn-primary w-100">
+                                    </div>
+                                </div>
+                            </form>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="width : 70%">Close</button>
                         </div>
                         </div>
                     </div>
                 </div>
             {% endif %}
-            <div class="card-body">
+            <div class="card-body" style="background-color : aquamarine;">
                 <p class="mb-2">{{ post.content }}</p>
-                <div class="d-flex justify-content-end">
-                    <a href="{% url 'posts:update' post.pk %}" class="btn btn-sm btn-info mx-1" style="min-width : 65px">Edit</a>
-                    <form action="{% url 'posts:delete' post.pk %}" method="POST" class="d-inline mx-1" style="min-width : 65px">
-                        {% csrf_token %}
-                        <input type="submit" value="DELETE" class="btn btn-danger btn-sm">
-                    </form>
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row">
+                        <form action="{% url 'posts:like' post.pk %}" method="POST" class="d-inlineblock me-2" style="min-width : 65px">
+                            {% csrf_token %}
+                            {% if user in post.like_users.all %}
+                            <input type="submit" value="좋아요취소" class="btn btn-danger btn-sm">
+                            {% else %}
+                            <input type="submit" value="좋아요" class="btn btn-success btn-sm">
+                            {% endif %}
+                        </form>
+                        <p data-bs-toggle="modal" data-bs-target="#post{{ post.pk }}" class="mb-0">댓글 {{ post.comment_set.count }}개</p>
+                    </div>
+                    {% if user == post.author %}
+                        <div class="d-flex">
+                            <a href="{% url 'posts:update' post.pk %}" class="btn btn-sm btn-info mx-1" style="width : 65px;  white-space: nowrap; box-sizing: border-box;">Edit</a>
+                            <form action="{% url 'posts:delete' post.pk %}" method="POST" class="d-inline mx-1" style="width : 65px; white-space: nowrap; box-sizing: border-box;">
+                                {% csrf_token %}
+                                <input type="submit" value="DELETE" class="btn btn-danger btn-sm">
+                            </form>
+                        </div>
+                    {% endif %}
                 </div>
-
             </div>
         </div>
     {% endfor %}

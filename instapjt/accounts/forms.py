@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = UserCreationForm.Meta.fields + ('email', 'first_name', 'last_name')
+        # fields = UserCreationForm.Meta.fields + ('email', 'first_name', 'last_name')
 
     profile_image = forms.ImageField(
         label = "프로필 사진",
@@ -14,11 +14,13 @@ class CustomUserCreationForm(UserCreationForm):
 
 class CustomUserChangeForm(UserChangeForm):
 
+    profile_image = forms.ImageField(
+        label = "프로필 사진",
+        required= False,
+    )
+
     class Meta(UserChangeForm.Meta):
         model = get_user_model()
-        fields = ('email', 'first_name', 'last_name', 'profile_image')
+        fields = ('username', 'profile_image', 'about',)
+        # fields = ('email', 'first_name', 'last_name', 'profile_image')
 
-    # profile_image = forms.ImageField(
-    #     label = "프로필 사진",
-    #     required= False,
-    # )
