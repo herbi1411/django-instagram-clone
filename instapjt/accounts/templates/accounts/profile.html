@@ -9,17 +9,17 @@
             <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
               <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px; height: 150px;">
                 <div style="width: 150px; height: 150px;">
-                  <img src="{{ user.profile_image.url }}"
+                  <img src="{{ targetUser.profile_image.url }}"
                     alt="profile image" class="img-fluid img-thumbnail"
                     style="width: 150px; height: 150px; z-index: 1; object-fit : cover;" 
-                    data-bs-toggle="modal" data-bs-target="#profile-image{{ user.pk }}">
+                    data-bs-toggle="modal" data-bs-target="#profile-image{{ targetUser.pk }}">
                   </div>
                 <!-- Modal -->
-                <div class="modal" id="profile-image{{ user.pk }}" tabindex="-1" aria-labelledby="exampleModalToggle" aria-hidden="true">
+                <div class="modal" id="profile-image{{ targetUser.pk }}" tabindex="-1" aria-labelledby="exampleModalToggle" aria-hidden="true">
                   <div class="modal-dialog" style="max-width : 50%;">
                       <div class="modal-content">
                           <div class="modal-body">
-                              <img src="{{ user.profile_image.url }}" class="card-img-top" alt="image" style="max-height : 900px; object-fit : contain;">
+                              <img src="{{ targetUser.profile_image.url }}" class="card-img-top" alt="image" style="max-height : 900px; object-fit : contain;">
                           </div>
                           <div class="modal-footer d-flex flex-column align-items-start">
                               <button type="button" class="d-block mx-auto btn btn-secondary" data-bs-dismiss="modal" style="width : 70%">Close</button>
@@ -27,7 +27,7 @@
                       </div>
                   </div>
                 </div>
-                {% if user == request.user %}
+                {% if targetUser == request.user %}
                   <a href="{% url 'accounts:update' %}" class="text-decoration-none">
                     <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
                     style="z-index: 1;">
@@ -37,18 +37,16 @@
                 </button>
               </div>
               <div class="ms-3" style="margin-top: 150px;">
-                <h5>{{ user.username }}</h5>
-                {% comment %} <h5>{{ user.first_name }} {{user.last_name}} </h5> {% endcomment %}
-                <p>{{ user.email }}</p>
+                <h5>{{ targetUser.username }}</h5>
               </div>
             </div>
             <div class="p-4 text-black" style="background-color: #f8f9fa;">
               <div class="d-flex justify-content-end text-center py-1">
-                {% if user != request.user %}
+                {% if targetUser != request.user %}
                   <div class="px-2">
-                    <form action="{% url 'accounts:follow' user.pk %}" method="post">
+                    <form action="{% url 'accounts:follow' targetUser.pk %}" method="post">
                       {% csrf_token %}
-                      {% if user in request.user.followings.all %}
+                      {% if targetUser in request.user.followings.all %}
                         <input type="submit" class="btn btn-danger" value="Unfollow">
                       {% else %}
                         <input type="submit" class="btn btn-success" value="Follow">
@@ -57,15 +55,15 @@
                   </div>
                 {% endif %}
                 <div class="px-2">
-                  <p class="mb-1 h5">{{ user.post_set.count}}</p>
+                  <p class="mb-1 h5">{{ targetUser.post_set.count}}</p>
                   <p class="small text-muted mb-0">Posts</p>
                 </div>
                 <div class="px-2">
-                  <p class="mb-1 h5">{{ user.followers.count }}</p>
+                  <p class="mb-1 h5">{{ targetUser.followers.count }}</p>
                   <p class="small text-muted mb-0">Followers</p>
                 </div>
                 <div class="px-2">
-                  <p class="mb-1 h5">{{ user.followings.count }}</p>
+                  <p class="mb-1 h5">{{ targetUser.followings.count }}</p>
                   <p class="small text-muted mb-0">Following</p>
                 </div>
               </div>
@@ -74,7 +72,7 @@
               <div class="mb-5">
                 <p class="lead fw-normal mb-1">About</p>
                 <div class="p-4" style="background-color: #f8f9fa;">
-                  <pre class="my-auto">{{ user.about }}</pre>
+                  <pre class="my-auto">{{ targetUser.about }}</pre>
                 </div>
               </div>
               <div class="d-flex justify-content-between align-items-center mb-4">

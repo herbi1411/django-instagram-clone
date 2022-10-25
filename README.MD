@@ -23,19 +23,23 @@
 회원가입  
 <img src="./images/signup.jpg" style="max-width : 50%;">
 <br>
-
+  
 로그인  
 <img src="./images/login.jpg" style="max-width : 50%;">
 <br>
-
+  
 메인화면  
 <img src="./images/index.jpg" style="max-width : 50%;">
 <br>
-
-프로필  
-<img src="./images/profile.jpg" style="max-width : 50%;">
+  
+프로필1 (본인의 프로필 조회)  
+<img src="./images/profile1.jpg" style="max-width : 50%;">
 <br>
-
+  
+프로필2 (타인의 프로필 조회)  
+<img src="./images/profile2.jpg" style="max-width : 50%;">
+<br>
+  
 게시글 상세페이지    
 <img src="./images/detail.jpg" style="max-width : 50%;">
 <br>

@@ -75,7 +75,7 @@ def profile(request, pk):
     posts = Post.objects.filter(author=user).order_by("created_at")
     comment_form = CommentForm()
     context = {
-        "user" : user,
+        "targetUser" : user,
         "posts" : posts,
         "comment_form" : comment_form,
     }
