@@ -72,7 +72,7 @@ def update(request):
 @require_safe
 def profile(request, pk):
     user = User.objects.get(pk=pk)
-    posts = Post.objects.filter(author=request.user).order_by("created_at")
+    posts = Post.objects.filter(author=user).order_by("created_at")
     comment_form = CommentForm()
     context = {
         "user" : user,

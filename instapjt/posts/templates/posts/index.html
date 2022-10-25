@@ -6,8 +6,10 @@
 <div class = "container d-flex flex-column mb-3 mx-auto mt-3 align-items-center">
     {% for post in posts %}
         <div class="card mb-5 " style="width:70%">
-            <div class="card-header">
-                <img src="{{ post.author.profile_image.url }}" width="30px;" alt="profile image" data-bs-toggle="modal" data-bs-target="#profile-image{{ post.pk }}">
+            <div class="card-header d-flex align-items-center">
+                <div class="mx-1">
+                    <img src="{{ post.author.profile_image.url }}" width="30px;" alt="profile image" data-bs-toggle="modal" data-bs-target="#profile-image{{ post.pk }}">
+                </div>
                 <!-- Modal -->
                 <div class="modal" id="profile-image{{ post.pk }}" tabindex="-1" aria-labelledby="exampleModalToggle" aria-hidden="true">
                     <div class="modal-dialog" style="max-width : 50%;">
